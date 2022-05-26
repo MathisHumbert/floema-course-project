@@ -53,7 +53,12 @@ app.get('/about', async (req, res) => {
   const api = await initApi(req);
   const about = await api.getSingle('about');
   const meta = await api.getSingle('meta');
-  console.log(meta);
+
+  about.data.body.forEach((item) => {
+    console.log(item.primary);
+    console.log(item.items);
+    console.log(item.slice_type);
+  });
 
   res.render('pages/about', {
     about,
@@ -65,8 +70,19 @@ app.get('/collections', (req, res) => {
   res.render('pages/collections');
 });
 
-app.get('/detail/:uid', (req, res) => {
-  res.render('pages/detal');
+app.get('/detail/:uid', async (req, res) => {
+  const api = await initApi(req);
+  const meta = await api.getSingle('meta');
+  const product = await api.getByUID('product', req.params.uid, {
+    fetchLinks: 'collection.title',
+  });
+
+  console.log(product.data.informations);
+
+  res.render('pages/detail', {
+    product,
+    meta,
+  });
 });
 
 app.listen(port, () => {
