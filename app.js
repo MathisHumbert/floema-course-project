@@ -16,6 +16,7 @@ app.use(bodyParser.json());
 app.use(logger('dev'));
 app.use(errorHandler());
 app.use(methodOverride());
+app.use(express.static(path.join(__dirname, 'public')));
 
 const Prismic = require('@prismicio/client');
 const PrismicH = require('@prismicio/helpers');
