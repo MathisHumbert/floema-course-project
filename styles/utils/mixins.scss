@@ -7,12 +7,12 @@
 }
 
 %center {
-  align-items: center;
   display: flex;
+  align-items: center;
   justify-content: center;
 }
 
-@mixin ratio ($height, $width) {
+@mixin ratio($height, $width) {
   font-size: 0;
   overflow: hidden;
   position: relative;

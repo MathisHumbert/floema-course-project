@@ -11,7 +11,7 @@ block content
 
    .detail__information 
     p.detail__information__collection=product.data.collection.data.title
-    h1.detail__information__collection=product.data.title[0].text
+    h1.detail__information__title=product.data.title[0].text
 
     .detail__information__content
      .detail__information__highlights 
@@ -19,12 +19,12 @@ block content
       p.detail__information__highlight 
        svg.detail__information__highlight__icon 
         use(xlink:href=`sprite-${highlight.highlights_icons.toLowerCase()}`)
-       span.detail__information__highlight__text=highlight.highlights_text
+       span.detail__information__highlight__text!=highlight.highlights_text.replace(/\n/, '<br>')
      
      .detail__information__list 
       each item in product.data.informations 
        p.detail__information__item 
         strong.detail__information__item__title=item.informations_label
-        span.detail__information__item__description=item.informations_description
+        span.detail__information__item__description=item.informations_descritpion
 
       a.detail__information__link(href=product.data.link_url target="_blank")=product.data.link_text

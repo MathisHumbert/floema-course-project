@@ -77,7 +77,6 @@ app.get('/', async (req, res) => {
   const api = await initApi(req);
   const home = await api.getSingle('home');
   const defaults = await handleRequest(api);
-  console.log(defaults.navigation);
 
   const collections = await api.query(
     Prismic.Predicates.at('document.type', 'collection'),
@@ -130,6 +129,8 @@ app.get('/detail/:uid', async (req, res) => {
   const product = await api.getByUID('product', req.params.uid, {
     fetchLinks: 'collection.title',
   });
+
+  console.log(product.data.informations);
 
   res.render('pages/detail', {
     product,
