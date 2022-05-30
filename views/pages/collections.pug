@@ -4,12 +4,12 @@ block variables
  - var template = 'collection'
 
 block content 
- .collections 
+ .collections  
   .collections__wrapper 
    .collections__titles 
     each collection, index in collections 
-     .collections__title__label!=`${home.data.collection}<br>${index == 0 ? 'One' : index == 1 ? 'Two' : index == 2 ? 'Three' : 'Four' }`
-     .collections__tiltes__title=collection.data.title
+     .collections__titles__label!=`${home.data.collection}<br>${index == 0 ? 'One' : index == 1 ? 'Two' : index == 2 ? 'Three' : 'Four' }`
+     .collections__titles__title=collection.data.title
 
    .collections__gallery
     .collections__gallery__wrapper

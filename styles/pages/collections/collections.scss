@@ -12,29 +12,15 @@
 }
 
 .collections__titles {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%) rotate(-90deg);
-  display: flex;
-  align-items: center;
+  @extend %vertical-titles;
 }
 
-.collections__title__label {
-  @extend %description-12;
-
-  letter-spacing: 0.1rem;
-  margin: 0.3rem;
-  text-align: center;
-  text-transform: uppercase;
-  transform: rotate(90deg);
-  color: $color-quarter-spanish-white;
+.collections__titles__label {
+  @extend %vertical-titles__label;
 }
 
-.collections__tiltes__title {
-  @extend %title-200;
-
-  padding-top: 2rem;
+.collections__titles__title {
+  @extend %vertical-titles__title;
 }
 
 .collections__gallery {
