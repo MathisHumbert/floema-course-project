@@ -4,12 +4,19 @@ import About from 'pages/About';
 import Collections from 'pages/Collections';
 import Detail from 'pages/Detail';
 import Home from 'pages/Home';
+import Preloader from './components/preloader';
 
 class App {
   constructor() {
+    this.createPreloader();
     this.createContent();
     this.createPages();
     this.addLinkListener();
+  }
+
+  createPreloader() {
+    this.preloader = new Preloader();
+    this.preloader.once('completed', this.onPreloaded.bind(this));
   }
 
   createContent() {
@@ -27,6 +34,10 @@ class App {
 
     this.page = this.pages[this.template];
     this.page.create();
+  }
+
+  async onPreloaded() {
+    this.preloader.destroy();
     this.page.show();
   }
 
@@ -48,6 +59,8 @@ class App {
       this.page = this.pages[this.template];
       this.page.create();
       this.page.show();
+
+      this.addLinkListener();
     } else {
       console.log('error');
     }
