@@ -11,7 +11,11 @@ class App {
     this.createPreloader();
     this.createContent();
     this.createPages();
+
+    this.addEventListeners();
     this.addLinkListener();
+
+    this.update();
   }
 
   createPreloader() {
@@ -38,14 +42,16 @@ class App {
 
   async onPreloaded() {
     this.preloader.destroy();
+    this.onResize();
     this.page.show();
   }
 
   async onChange(url) {
     await this.page.hide();
+    console.log(url);
 
     const request = await window.fetch(url);
-    console.log(request);
+
     if (request.status === 200) {
       const html = await request.text();
       const div = document.createElement('div');
@@ -58,12 +64,31 @@ class App {
 
       this.page = this.pages[this.template];
       this.page.create();
+
+      this.onResize();
       this.page.show();
 
       this.addLinkListener();
     } else {
       console.log('error');
     }
+  }
+
+  onResize() {
+    if (this.page && this.page.onResize) {
+      this.page.onResize();
+    }
+  }
+
+  update() {
+    if (this.page && this.page.update) {
+      this.page.update();
+    }
+    this.frame = window.requestAnimationFrame(this.update.bind(this));
+  }
+
+  addEventListeners() {
+    window.addEventListener('resize', this.onResize.bind(this));
   }
 
   addLinkListener() {
