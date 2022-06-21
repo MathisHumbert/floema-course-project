@@ -48,7 +48,6 @@ class App {
 
   async onChange(url) {
     await this.page.hide();
-    console.log(url);
 
     const request = await window.fetch(url);
 

@@ -46,3 +46,13 @@ img {
 .content {
   @extend %cover;
 }
+
+[data-animation='title'],
+[data-animation='paragraph'],
+[data-animation='label'] {
+  span {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+  }
+}
