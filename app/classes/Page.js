@@ -7,6 +7,8 @@ import Title from 'animations/Title';
 import Paragraph from 'animations/Paragraph';
 import Label from 'animations/Label';
 import Highlight from 'animations/Highlight';
+import AsyncLoad from 'classes/AsyncLoad';
+import { ColorsManager } from 'classes/Colors';
 
 export default class Page {
   constructor({ element, elements, id }) {
@@ -17,6 +19,7 @@ export default class Page {
       animationsParagraphs: '[data-animation="paragraph"]',
       animationsLabels: '[data-animation="label"]',
       animationsHighlights: '[data-animation="highlight"]',
+      preloaders: '[data-src]',
     };
     this.id = id;
     this.transforPrefix = Prefix('transform');
@@ -58,6 +61,7 @@ export default class Page {
     });
 
     this.createAnimations();
+    this.createPreloader();
   }
 
   createAnimations() {
@@ -98,8 +102,18 @@ export default class Page {
     this.animations.push(...this.animationsHighlights);
   }
 
+  createPreloader() {
+    this.preloaders = map(this.elements.preloaders, (element) => {
+      return new AsyncLoad({ element });
+    });
+  }
+
   show() {
     return new Promise((resolve) => {
+      ColorsManager.change({
+        backgroundColor: this.element.getAttribute('data-background'),
+        color: this.element.getAttribute('data-color'),
+      });
       this.animationIn = GSAP.timeline();
 
       this.animationIn.fromTo(this.element, { autoAlpha: 0 }, { autoAlpha: 1 });
@@ -113,8 +127,7 @@ export default class Page {
 
   hide() {
     return new Promise((resolve) => {
-      this.removeEventListeners();
-
+      this.destroy();
       this.animationOut = GSAP.timeline();
 
       this.animationOut.to(this.element, { autoAlpha: 0, onComplete: resolve });
@@ -122,11 +135,13 @@ export default class Page {
   }
 
   onMouseWheel(event) {
+    console.log(this.scroll.limit);
     const { pixelY } = NormalizeWheel(event);
     this.scroll.target += pixelY;
   }
 
   onResize() {
+    console.log(this.elements.wrapper);
     if (this.elements.wrapper) {
       this.scroll.limit =
         this.elements.wrapper.clientHeight - window.innerHeight;
@@ -165,5 +180,9 @@ export default class Page {
 
   removeEventListeners() {
     window.removeEventListener('mousewheel', this.onMouseWheelEvent);
+  }
+
+  destroy() {
+    this.removeEventListeners();
   }
 }

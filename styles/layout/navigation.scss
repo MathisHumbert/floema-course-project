@@ -2,9 +2,9 @@
   @extend %cover;
 
   color: $color-quarter-spanish-white;
-  z-index: z('navigation');
-  position: fixed;
   pointer-events: none;
+  position: fixed;
+  z-index: z('navigation');
 }
 
 .navigation__link {
@@ -40,6 +40,7 @@
 
 .navigation__list__link {
   @extend %title-20;
+  @extend %link--hidden;
 
   display: block;
 }
