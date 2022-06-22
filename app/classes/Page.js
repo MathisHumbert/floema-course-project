@@ -135,13 +135,11 @@ export default class Page {
   }
 
   onMouseWheel(event) {
-    console.log(this.scroll.limit);
     const { pixelY } = NormalizeWheel(event);
     this.scroll.target += pixelY;
   }
 
   onResize() {
-    console.log(this.elements.wrapper);
     if (this.elements.wrapper) {
       this.scroll.limit =
         this.elements.wrapper.clientHeight - window.innerHeight;

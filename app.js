@@ -7,6 +7,7 @@ const errorHandler = require('errorhandler');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const logger = require('morgan');
+const uaParser = require('ua-parser-js');
 
 const app = express();
 const port = 3000;
@@ -47,10 +48,11 @@ const HandleLinkResolver = (doc) => {
 
 // Middleware to inject prismic context
 app.use((req, res, next) => {
-  // res.locals.ctx = {
-  //   endpoint: process.env.PRISMIC_ENDPOINT,
-  //   linkResolver: HandleLinkResolver,
-  // };
+  const ua = uaParser(req.headers['user-agent']);
+
+  res.locals.isDesktop = ua.device.type === undefined;
+  res.locals.isPhone = ua.device.type === 'mobile';
+  res.locals.isTablet = ua.device.type === 'tablet';
 
   res.locals.Link = HandleLinkResolver;
   res.locals.PrismicH = PrismicH;
