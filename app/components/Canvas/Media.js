@@ -1,4 +1,5 @@
 import { Mesh, Program, Texture } from 'ogl';
+import GSAP from 'gsap';
 
 import vertex from 'shaders/plane-vertex.glsl';
 import fragment from 'shaders/plane-fragment.glsl';
@@ -15,6 +16,11 @@ export default class Media {
     this.createTexture();
     this.createProgram();
     this.createMesh();
+
+    this.extra = {
+      x: 0,
+      y: 0,
+    };
   }
 
   createTexture() {
@@ -45,28 +51,34 @@ export default class Media {
     this.mesh.setParent(this.scene);
 
     this.mesh.position.x += this.index * this.mesh.scale.x;
+
+    this.mesh.rotation.z = GSAP.utils.random(-Math.PI * 0.03, Math.PI * 0.03);
   }
 
   createBounds(sizes) {
-    this.size = sizes;
+    this.sizes = sizes;
     this.bounds = this.element.getBoundingClientRect();
 
-    this.updateScale(sizes);
+    this.updateScale();
     this.updateX();
     this.updateY();
   }
 
   // EVENTS
-
-  onResize(sizes) {
+  onResize(sizes, scroll) {
+    this.extra = {
+      x: 0,
+      y: 0,
+    };
     this.createBounds(sizes);
+    this.updateX(scroll ? scroll.x : 0);
+    this.updateY(scroll ? scroll.y : 0);
   }
 
   // UPDATES
-
   updateScale() {
-    this.width = this.bounds.width / window.innerWidth;
     this.height = this.bounds.height / window.innerHeight;
+    this.width = this.bounds.width / window.innerWidth;
 
     this.mesh.scale.x = this.sizes.width * this.width;
     this.mesh.scale.y = this.sizes.height * this.height;
@@ -76,7 +88,10 @@ export default class Media {
     this.x = (this.bounds.left + x) / window.innerWidth;
 
     this.mesh.position.x =
-      -this.sizes.width / 2 + this.mesh.scale.x / 2 + this.x * this.sizes.width;
+      -this.sizes.width / 2 +
+      this.mesh.scale.x / 2 +
+      this.x * this.sizes.width +
+      this.extra.x;
   }
 
   updateY(y = 0) {
@@ -85,7 +100,8 @@ export default class Media {
     this.mesh.position.y =
       this.sizes.height / 2 -
       this.mesh.scale.y / 2 -
-      this.y * this.sizes.height;
+      this.y * this.sizes.height +
+      this.extra.y;
   }
 
   update(scroll) {

@@ -1,4 +1,5 @@
 import { each } from 'lodash';
+import NormalizeWheel from 'normalize-wheel';
 
 import About from 'pages/About';
 import Collections from 'pages/Collections';
@@ -100,13 +101,15 @@ class App {
   }
 
   onResize() {
-    if (this.canvas && this.canvas.onResize) {
-      this.canvas.onResize();
-    }
-
     if (this.page && this.page.onResize) {
       this.page.onResize();
     }
+
+    window.requestAnimationFrame(() => {
+      if (this.canvas && this.canvas.onResize) {
+        this.canvas.onResize();
+      }
+    });
   }
 
   onTouchDown(event) {
@@ -127,6 +130,18 @@ class App {
     }
   }
 
+  onWheel(event) {
+    const normalizedWheel = NormalizeWheel(event);
+
+    if (this.canvas && this.canvas.onWheel) {
+      this.canvas.onWheel(normalizedWheel);
+    }
+
+    if (this.page && this.page.onWheel) {
+      this.page.onWheel(normalizedWheel);
+    }
+  }
+
   update() {
     if (this.canvas && this.canvas.update) {
       this.canvas.update();
@@ -139,6 +154,8 @@ class App {
   }
 
   addEventListeners() {
+    window.addEventListener('mousewheel', this.onWheel.bind(this));
+
     window.addEventListener('popstate', this.onPopState.bind(this));
     window.addEventListener('resize', this.onResize.bind(this));
 

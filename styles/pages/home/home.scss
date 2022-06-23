@@ -56,7 +56,7 @@
 .home__gallery {
   @extend %cover;
 
-  width: 241.8rem;
+  width: 241.8rem + 9rem;
   height: 172.5rem;
   visibility: hidden;
 }
@@ -171,7 +171,6 @@
 }
 
 .home__gallery__image {
-  opacity: 1;
   display: block;
   width: 100%;
 }

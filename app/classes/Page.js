@@ -1,7 +1,6 @@
 import { each, map } from 'lodash';
 import GSAP from 'gsap';
 import Prefix from 'prefix';
-import NormalizeWheel from 'normalize-wheel';
 
 import Title from 'animations/Title';
 import Paragraph from 'animations/Paragraph';
@@ -23,13 +22,13 @@ export default class Page {
     };
     this.id = id;
     this.transforPrefix = Prefix('transform');
+
     this.scroll = {
       current: 0,
       target: 0,
       last: 0,
       limit: 0,
     };
-    this.onMouseWheelEvent = this.onMouseWheel.bind(this);
   }
 
   create() {
@@ -134,11 +133,6 @@ export default class Page {
     });
   }
 
-  onMouseWheel(event) {
-    const { pixelY } = NormalizeWheel(event);
-    this.scroll.target += pixelY;
-  }
-
   onResize() {
     if (this.elements.wrapper) {
       this.scroll.limit =
@@ -146,6 +140,10 @@ export default class Page {
     }
 
     each(this.animations, (animation) => animation.onResize());
+  }
+
+  onWheel({ pixelY }) {
+    this.scroll.target += pixelY;
   }
 
   update() {
@@ -172,13 +170,9 @@ export default class Page {
     }
   }
 
-  addEventListeners() {
-    window.addEventListener('mousewheel', this.onMouseWheelEvent);
-  }
+  addEventListeners() {}
 
-  removeEventListeners() {
-    window.removeEventListener('mousewheel', this.onMouseWheelEvent);
-  }
+  removeEventListeners() {}
 
   destroy() {
     this.removeEventListeners();
