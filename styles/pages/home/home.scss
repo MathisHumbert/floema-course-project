@@ -1,11 +1,13 @@
 .home {
-  @extend %page;
   @extend %center;
+  @extend %page;
 
-  background: $color-contessa;
-  color: $color-quarter-spanish-white;
-  text-align: center;
   overflow: hidden;
+  text-align: center;
+
+  // &--active {
+  //   @extend %page--active;
+  // }
 }
 
 .home__wrapper {

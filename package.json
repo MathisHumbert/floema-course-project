@@ -48,7 +48,6 @@
     "node-fetch": "^2.6.7",
     "nodemon": "^2.0.15",
     "normalize-wheel": "^1.0.1",
-    "ogl": "0.0.76",
     "postcss-loader": "^6.1.1",
     "prefix": "^1.0.0",
     "raw-loader": "^4.0.2",
@@ -70,6 +69,7 @@
     "express": "^4.17.1",
     "method-override": "^3.0.0",
     "morgan": "^1.10.0",
+    "ogl": "^0.0.73",
     "pug": "^3.0.2",
     "ua-parser-js": "^1.0.2"
   }
