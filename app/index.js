@@ -151,7 +151,7 @@ class App {
     }
 
     if (this.canvas && this.canvas.update) {
-      this.canvas.update();
+      this.canvas.update(this.page.scroll);
     }
 
     this.frame = window.requestAnimationFrame(this.update.bind(this));

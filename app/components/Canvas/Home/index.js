@@ -50,7 +50,6 @@ export default class Home {
   }
 
   createGallery() {
-    console.log('create');
     this.medias = map(this.mediasElements, (element, index) => {
       return new Media({
         element,

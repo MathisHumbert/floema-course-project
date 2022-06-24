@@ -89,12 +89,34 @@ export default class Media {
   }
 
   // UPDATES
+  updateRotation() {
+    this.mesh.rotation.z = GSAP.utils.mapRange(
+      -this.sizes.width / 2,
+      this.sizes.width / 2,
+      Math.PI * 0.1,
+      -Math.PI * 0.1,
+      this.mesh.position.x
+    );
+  }
+
   updateScale() {
     this.height = this.bounds.height / window.innerHeight;
     this.width = this.bounds.width / window.innerWidth;
 
     this.mesh.scale.x = this.sizes.width * this.width;
     this.mesh.scale.y = this.sizes.height * this.height;
+
+    // scale the img bigger in the center
+    // const scale = (this.mesh.scale.x -= GSAP.utils.mapRange(
+    //   0,
+    //   this.sizes.width / 2,
+    //   0.1,
+    //   0,
+    //   Math.abs(this.mesh.position.x)
+    // ));
+
+    // this.mesh.scale.x += scale;
+    // this.mesh.scale.y += scale;
   }
 
   updateX(x = 0) {
@@ -114,11 +136,16 @@ export default class Media {
       this.sizes.height / 2 -
       this.mesh.scale.y / 2 -
       this.y * this.sizes.height;
+    this.mesh.position.y +=
+      Math.cos((this.mesh.position.x / this.sizes.width) * Math.PI * 0.1) * 40 -
+      40;
   }
 
   update(scroll) {
     if (!this.bounds) return;
 
+    this.updateRotation();
+    this.updateScale();
     this.updateX(scroll);
     this.updateY(0);
   }

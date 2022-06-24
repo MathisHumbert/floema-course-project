@@ -66,8 +66,8 @@ export default class Home {
   onWheel({ pixelX, pixelY }) {}
 
   // UPDATES
-  update() {
-    map(this.galleries, (gallery) => gallery.update());
+  update(scroll) {
+    map(this.galleries, (gallery) => gallery.update(scroll));
   }
 
   // DESTROY
