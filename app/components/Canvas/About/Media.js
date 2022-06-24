@@ -1,4 +1,5 @@
 import { Mesh, Program, Texture } from 'ogl';
+import GSAP from 'gsap';
 
 import vertex from 'shaders/plane-vertex.glsl';
 import fragment from 'shaders/plane-fragment.glsl';
@@ -39,6 +40,7 @@ export default class Media {
       vertex,
       uniforms: {
         tMap: { value: this.texture },
+        uAlpha: { value: 0 },
       },
     });
   }
@@ -59,6 +61,23 @@ export default class Media {
     this.updateScale();
     this.updateX();
     this.updateY();
+  }
+
+  // ANIMATIONS
+  show() {
+    GSAP.fromTo(
+      this.program.uniforms.uAlpha,
+      {
+        value: 0,
+      },
+      { value: 1 }
+    );
+  }
+
+  hide() {
+    GSAP.to(this.program.uniforms.uAlpha, {
+      value: 0,
+    });
   }
 
   // EVENTS

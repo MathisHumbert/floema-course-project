@@ -1,4 +1,5 @@
 import { Mesh, Program, Texture } from 'ogl';
+import GSAP from 'gsap';
 
 import vertex from 'shaders/plane-vertex.glsl';
 import fragment from 'shaders/plane-fragment.glsl';
@@ -25,9 +26,11 @@ export default class Media {
   createTexture() {
     this.texture = new Texture(this.gl);
 
+    const image = this.element.querySelector('img');
+
     this.image = new window.Image();
     this.image.crossOrigin = 'anonymous';
-    this.image.src = this.element.getAttribute('data-src');
+    this.image.src = image.getAttribute('data-src');
     this.image.onload = () => (this.texture.image = this.image);
   }
 
@@ -37,6 +40,7 @@ export default class Media {
       vertex,
       uniforms: {
         tMap: { value: this.texture },
+        uAlpha: { value: 0 },
       },
     });
   }
@@ -49,18 +53,34 @@ export default class Media {
 
     this.mesh.setParent(this.scene);
 
-    // this.mesh.position.x += this.index * this.mesh.scale.x;
-
     // this.mesh.rotation.z = GSAP.utils.random(-Math.PI * 0.03, Math.PI * 0.03);
   }
 
   createBounds(sizes) {
     this.sizes = sizes;
     this.bounds = this.element.getBoundingClientRect();
+    console.log(this.bounds.height);
 
     this.updateScale();
     this.updateX();
     this.updateY();
+  }
+
+  // ANIMATIONS
+  show() {
+    GSAP.fromTo(
+      this.program.uniforms.uAlpha,
+      {
+        value: 0,
+      },
+      { value: 1 }
+    );
+  }
+
+  hide() {
+    GSAP.to(this.program.uniforms.uAlpha, {
+      value: 0,
+    });
   }
 
   // EVENTS

@@ -7,7 +7,13 @@ import Media from './Media';
 export default class Home {
   constructor({ gl, scene, sizes }) {
     this.gl = gl;
+    this.scene = scene;
     this.sizes = sizes;
+
+    this.group = new Transform();
+
+    this.galleryElement = document.querySelector('.home__gallery');
+    this.mediasElements = document.querySelectorAll('.home__gallery__media');
 
     this.x = {
       current: 0,
@@ -31,15 +37,12 @@ export default class Home {
       y: 0,
     };
 
-    this.group = new Transform();
-
-    this.galleryElement = document.querySelector('.home__gallery');
-    this.mediasElements = document.querySelectorAll('.home__gallery__image');
-
     this.createGeometry();
     this.createGallery();
 
-    this.group.setParent(scene);
+    this.group.setParent(this.scene);
+
+    this.show();
   }
 
   createGeometry() {
@@ -47,6 +50,7 @@ export default class Home {
   }
 
   createGallery() {
+    console.log('create');
     this.medias = map(this.mediasElements, (element, index) => {
       return new Media({
         element,
@@ -59,8 +63,16 @@ export default class Home {
     });
   }
 
-  // EVENTS
+  // ANIMATIONS
+  show() {
+    map(this.medias, (media) => media.show());
+  }
 
+  hide() {
+    map(this.medias, (media) => media.hide());
+  }
+
+  // EVENTS
   onResize({ sizes }) {
     this.scroll.x = this.x.target = 0;
     this.scroll.y = this.y.target = 0;
@@ -97,7 +109,6 @@ export default class Home {
   }
 
   // UPDATES
-
   update() {
     if (!this.galleryBounds) return;
 
@@ -164,7 +175,8 @@ export default class Home {
     });
   }
 
+  // DESTROY
   destroy() {
-    // this.group.setParent(null)
+    this.scene.removeChild(this.group);
   }
 }

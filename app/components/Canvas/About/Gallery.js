@@ -44,6 +44,15 @@ export default class Gallery {
     });
   }
 
+  // ANIMATIONS
+  show() {
+    map(this.medias, (media) => media.show());
+  }
+
+  hide() {
+    map(this.medias, (media) => media.hide());
+  }
+
   // EVENTS
   onResize({ sizes }) {
     this.sizes = sizes;
@@ -71,7 +80,6 @@ export default class Gallery {
   onWheel() {}
 
   // UPDATES
-
   update() {
     if (!this.bounds) return;
 
@@ -86,8 +94,6 @@ export default class Gallery {
       this.scroll.target,
       this.scroll.lerp
     );
-
-    console.log(this.direction);
 
     map(this.medias, (media) => {
       const scaleX = media.mesh.scale.x / 2;
@@ -108,5 +114,10 @@ export default class Gallery {
 
       media.update(this.scroll.current);
     });
+  }
+
+  // DESTROY
+  destroy() {
+    this.scene.removeChild(this.group);
   }
 }

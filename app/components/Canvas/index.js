@@ -24,7 +24,7 @@ export default class Canvas {
 
     this.onResize();
 
-    this.onRouteUpdate(this.template);
+    this.onChangeEnd(this.template);
   }
 
   // create the render
@@ -74,7 +74,19 @@ export default class Canvas {
     this.about = null;
   }
 
-  onRouteUpdate(template) {
+  // EVENTS
+
+  onChangeStart() {
+    if (this.home) {
+      this.home.hide();
+    }
+
+    if (this.about) {
+      this.about.hide();
+    }
+  }
+
+  onChangeEnd(template) {
     if (template === 'home') {
       this.createHome();
     } else {
@@ -83,8 +95,8 @@ export default class Canvas {
 
     if (template === 'about') {
       this.createAbout();
-    } else if (this.About) {
-      this.destroyHome();
+    } else {
+      this.destroyAbout();
     }
   }
 
@@ -176,6 +188,7 @@ export default class Canvas {
     }
   }
 
+  // UPDATES
   update() {
     if (this.about) {
       this.about.update();

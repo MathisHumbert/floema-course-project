@@ -14,6 +14,8 @@ export default class Home {
     this.createGalleries();
 
     this.group.setParent(scene);
+
+    this.show();
   }
 
   createGeometry() {
@@ -35,8 +37,16 @@ export default class Home {
     });
   }
 
-  // EVENTS
+  // ANIMATIONS
+  show() {
+    map(this.galleries, (gallery) => gallery.show());
+  }
 
+  hide() {
+    map(this.galleries, (gallery) => gallery.hide());
+  }
+
+  // EVENTS
   onResize(event) {
     map(this.galleries, (gallery) => gallery.onResize(event));
   }
@@ -58,5 +68,10 @@ export default class Home {
   // UPDATES
   update() {
     map(this.galleries, (gallery) => gallery.update());
+  }
+
+  // DESTROY
+  destroy() {
+    map(this.galleries, (gallery) => gallery.destroy());
   }
 }
