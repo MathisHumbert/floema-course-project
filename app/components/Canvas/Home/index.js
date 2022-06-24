@@ -131,13 +131,13 @@ export default class Home {
       const scaleX = media.mesh.scale.x / 2;
 
       if (this.x.direction === 'left') {
-        const x = media.mesh.position.x + scaleX / 2;
+        const x = media.mesh.position.x + scaleX;
 
         if (x < -this.sizes.width / 2) {
           media.extra.x += this.gallerySizes.width;
         }
       } else if (this.x.direction === 'right') {
-        const x = media.mesh.position.x - scaleX / 2;
+        const x = media.mesh.position.x - scaleX;
 
         if (x > this.sizes.width / 2) {
           media.extra.x -= this.gallerySizes.width;
@@ -162,5 +162,9 @@ export default class Home {
 
       media.update(this.scroll);
     });
+  }
+
+  destroy() {
+    // this.group.setParent(null)
   }
 }

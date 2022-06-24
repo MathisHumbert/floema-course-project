@@ -1,9 +1,12 @@
 import { Camera, Renderer, Transform } from 'ogl';
 
+import About from './About';
 import Home from './Home';
 
 export default class Canvas {
-  constructor() {
+  constructor({ template }) {
+    this.template = template;
+
     this.x = {
       start: 0,
       distance: 0,
@@ -21,7 +24,7 @@ export default class Canvas {
 
     this.onResize();
 
-    this.createHome();
+    this.onRouteUpdate(this.template);
   }
 
   // create the render
@@ -49,6 +52,42 @@ export default class Canvas {
     this.home = new Home({ gl: this.gl, scene: this.scene, sizes: this.sizes });
   }
 
+  destroyHome() {
+    if (!this.home) return;
+
+    this.home.destroy();
+    this.home = null;
+  }
+
+  createAbout() {
+    this.about = new About({
+      gl: this.gl,
+      scene: this.scene,
+      sizes: this.sizes,
+    });
+  }
+
+  destroyAbout() {
+    if (!this.about) return;
+
+    this.about.destroy();
+    this.about = null;
+  }
+
+  onRouteUpdate(template) {
+    if (template === 'home') {
+      this.createHome();
+    } else {
+      this.destroyHome();
+    }
+
+    if (template === 'about') {
+      this.createAbout();
+    } else if (this.About) {
+      this.destroyHome();
+    }
+  }
+
   // set the size of the full page for the canvas
   onResize() {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -65,10 +104,14 @@ export default class Canvas {
       width,
     };
 
+    const values = { sizes: this.sizes };
+
+    if (this.about) {
+      this.about.onResize(values);
+    }
+
     if (this.home) {
-      this.home.onResize({
-        sizes: this.sizes,
-      });
+      this.home.onResize(values);
     }
   }
 
@@ -78,8 +121,14 @@ export default class Canvas {
     this.x.start = event.touches ? event.touches[0].clientX : event.clientX;
     this.y.start = event.touches ? event.touches[0].clientY : event.clientY;
 
+    const values = { x: this.x, y: this.y };
+
+    if (this.about) {
+      this.about.onTouchDown(values);
+    }
+
     if (this.home) {
-      this.home.onTouchDown({ x: this.x, y: this.y });
+      this.home.onTouchDown(values);
     }
   }
 
@@ -89,8 +138,14 @@ export default class Canvas {
     this.x.end = event.touches ? event.touches[0].clientX : event.clientX;
     this.y.end = event.touches ? event.touches[0].clientY : event.clientY;
 
+    const values = { x: this.x, y: this.y };
+
+    if (this.about) {
+      this.about.onTouchMove(values);
+    }
+
     if (this.home) {
-      this.home.onTouchMove({ x: this.x, y: this.y });
+      this.home.onTouchMove(values);
     }
   }
 
@@ -104,8 +159,14 @@ export default class Canvas {
       ? event.changedTouches[0].clientY
       : event.clientY;
 
+    const values = { x: this.x, y: this.y };
+
+    if (this.about) {
+      this.about.onTouchUp(values);
+    }
+
     if (this.home) {
-      this.home.onTouchUp({ x: this.x, y: this.y });
+      this.home.onTouchUp(values);
     }
   }
 
@@ -116,6 +177,10 @@ export default class Canvas {
   }
 
   update() {
+    if (this.about) {
+      this.about.update();
+    }
+
     if (this.home) {
       this.home.update();
     }

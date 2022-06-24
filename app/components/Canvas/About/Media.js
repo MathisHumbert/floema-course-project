@@ -1,5 +1,4 @@
 import { Mesh, Program, Texture } from 'ogl';
-import GSAP from 'gsap';
 
 import vertex from 'shaders/plane-vertex.glsl';
 import fragment from 'shaders/plane-fragment.glsl';
@@ -26,9 +25,11 @@ export default class Media {
   createTexture() {
     this.texture = new Texture(this.gl);
 
+    const image = this.element.querySelector('img');
+
     this.image = new window.Image();
     this.image.crossOrigin = 'anonymous';
-    this.image.src = this.element.getAttribute('data-src');
+    this.image.src = image.getAttribute('data-src');
     this.image.onload = () => (this.texture.image = this.image);
   }
 
@@ -49,10 +50,6 @@ export default class Media {
     });
 
     this.mesh.setParent(this.scene);
-
-    this.mesh.position.x += this.index * this.mesh.scale.x;
-
-    this.mesh.rotation.z = GSAP.utils.random(-Math.PI * 0.03, Math.PI * 0.03);
   }
 
   createBounds(sizes) {
@@ -66,13 +63,10 @@ export default class Media {
 
   // EVENTS
   onResize(sizes, scroll) {
-    this.extra = {
-      x: 0,
-      y: 0,
-    };
+    this.extra = 0;
     this.createBounds(sizes);
-    this.updateX(scroll ? scroll.x : 0);
-    this.updateY(scroll ? scroll.y : 0);
+    this.updateX(scroll);
+    this.updateY(0);
   }
 
   // UPDATES
@@ -91,7 +85,7 @@ export default class Media {
       -this.sizes.width / 2 +
       this.mesh.scale.x / 2 +
       this.x * this.sizes.width +
-      this.extra.x;
+      this.extra;
   }
 
   updateY(y = 0) {
@@ -100,14 +94,13 @@ export default class Media {
     this.mesh.position.y =
       this.sizes.height / 2 -
       this.mesh.scale.y / 2 -
-      this.y * this.sizes.height +
-      this.extra.y;
+      this.y * this.sizes.height;
   }
 
   update(scroll) {
     if (!this.bounds) return;
 
-    this.updateX(scroll.x);
-    this.updateY(scroll.y);
+    this.updateX(scroll);
+    this.updateY(0);
   }
 }
