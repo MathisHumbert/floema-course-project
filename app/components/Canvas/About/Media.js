@@ -1,4 +1,4 @@
-import { Mesh, Program, Texture } from 'ogl';
+import { Mesh, Program } from 'ogl';
 import GSAP from 'gsap';
 
 import vertex from 'shaders/plane-vertex.glsl';
@@ -23,15 +23,21 @@ export default class Media {
     };
   }
 
+  // old way to load
+  // createTexture() {
+  //   this.texture = new Texture(this.gl);
+
+  //   const image = this.element.querySelector('img');
+
+  //   this.image = new window.Image();
+  //   this.image.crossOrigin = 'anonymous';
+  //   this.image.src = image.getAttribute('data-src');
+  //   this.image.onload = () => (this.texture.image = this.image);
+  // }
+
   createTexture() {
-    this.texture = new Texture(this.gl);
-
     const image = this.element.querySelector('img');
-
-    this.image = new window.Image();
-    this.image.crossOrigin = 'anonymous';
-    this.image.src = image.getAttribute('data-src');
-    this.image.onload = () => (this.texture.image = this.image);
+    this.texture = window.TEXTURES[image.getAttribute('data-src')];
   }
 
   createProgram() {

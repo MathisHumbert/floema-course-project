@@ -38,4 +38,7 @@ html(lang="en")(class=isDesktop ? 'desktop' : isTablet ? 'tablet' : isPhone ? 'p
    .content#content(data-template=template)
     block content
 
+    script.
+      window.ASSETS = !{JSON.stringify(assets).replace(/<\//g, "<\\/")}
+
     script(src="main.js")

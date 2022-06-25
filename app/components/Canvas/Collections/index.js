@@ -5,7 +5,7 @@ import Prefix from 'prefix';
 
 import Media from './Media';
 
-export default class About {
+export default class Collections {
   constructor({ gl, scene, sizes }) {
     this.gl = gl;
     this.scene = scene;
