@@ -6,10 +6,13 @@ import Prefix from 'prefix';
 import Media from './Media';
 
 export default class Collections {
-  constructor({ gl, scene, sizes }) {
+  constructor({ gl, scene, sizes, transition }) {
+    this.id = 'collections';
+
     this.gl = gl;
     this.scene = scene;
     this.sizes = sizes;
+    this.transition = transition;
 
     this.transformPrefix = Prefix('transform');
 
@@ -67,6 +70,10 @@ export default class Collections {
   }
 
   hide() {
+    if (this.transition) {
+      this.transition.animate(this.medias[0], () => {});
+    }
+
     map(this.medias, (media) => media.hide());
   }
 
@@ -144,16 +151,16 @@ export default class Collections {
 
     this.scroll.last = this.scroll.current;
 
-    map(this.medias, (media) => {
-      media.update(this.scroll.current);
-    });
-
     const index = Math.floor(
       Math.abs(this.scroll.current / this.scroll.limit) * this.medias.length
     );
     if (this.index !== index) {
       this.onChange(index);
     }
+
+    map(this.medias, (media) => {
+      media.update(this.scroll.current, this.index);
+    });
   }
 
   // DESTROY
