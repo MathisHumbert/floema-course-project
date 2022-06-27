@@ -45,6 +45,7 @@ export default class Home {
 
     this.createGeometry();
     this.createGallery();
+    this.onResize({ sizes: this.sizes });
 
     this.group.setParent(this.scene);
 
@@ -122,8 +123,6 @@ export default class Home {
 
   // UPDATES
   update() {
-    if (!this.galleryBounds) return;
-
     this.speed.current = GSAP.utils.interpolate(
       this.speed.current,
       this.speed.target,

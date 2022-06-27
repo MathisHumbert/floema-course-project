@@ -42,6 +42,8 @@ export default class Collections {
     this.createGeometry();
     this.createGallery();
 
+    this.onResize({ sizes: this.sizes });
+
     this.group.setParent(this.scene);
 
     this.show();
@@ -65,15 +67,15 @@ export default class Collections {
   }
 
   // ANIMATIONS
-  show() {
+  async show() {
+    if (this.transition) {
+      this.transition.animate(this.medias[0].mesh, () => {});
+    }
+
     map(this.medias, (media) => media.show());
   }
 
   hide() {
-    if (this.transition) {
-      this.transition.animate(this.medias[0], () => {});
-    }
-
     map(this.medias, (media) => media.hide());
   }
 
@@ -126,8 +128,6 @@ export default class Collections {
 
   // UPDATES
   update() {
-    if (!this.bounds) return;
-
     this.scroll.target = GSAP.utils.clamp(
       -this.scroll.limit,
       0,

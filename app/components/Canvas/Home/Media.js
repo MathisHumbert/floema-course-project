@@ -13,14 +13,15 @@ export default class Media {
     this.scene = scene;
     this.sizes = sizes;
 
-    this.createTexture();
-    this.createProgram();
-    this.createMesh();
-
     this.extra = {
       x: 0,
       y: 0,
     };
+
+    this.createTexture();
+    this.createProgram();
+    this.createMesh();
+    this.createBounds(this.sizes);
   }
 
   createTexture() {
@@ -119,8 +120,6 @@ export default class Media {
   }
 
   update(scroll, speed) {
-    if (!this.bounds) return;
-
     this.updateX(scroll.x);
     this.updateY(scroll.y);
     this.program.uniforms.uSpeed.value = speed;

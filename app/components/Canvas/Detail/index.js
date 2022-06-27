@@ -111,8 +111,6 @@ export default class Detail {
   }
 
   update() {
-    if (!this.bounds) return;
-
     this.updateX();
     this.updateY();
   }

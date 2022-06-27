@@ -13,10 +13,6 @@ export default class Media {
     this.scene = scene;
     this.sizes = sizes;
 
-    this.createTexture();
-    this.createProgram();
-    this.createMesh();
-
     this.extra = {
       x: 0,
       y: 0,
@@ -28,6 +24,11 @@ export default class Media {
       lerp: 0.1,
       multiplier: 0,
     };
+
+    this.createTexture();
+    this.createProgram();
+    this.createMesh();
+    this.createBounds(this.sizes);
   }
 
   createTexture() {
@@ -121,9 +122,7 @@ export default class Media {
       this.extra.y;
   }
 
-  update(scroll, index) {
-    if (!this.bounds) return;
-
+  update(scroll) {
     this.updateX(scroll);
     this.updateY(0);
 

@@ -13,14 +13,15 @@ export default class Media {
     this.scene = scene;
     this.sizes = sizes;
 
-    this.createTexture();
-    this.createProgram();
-    this.createMesh();
-
     this.extra = {
       x: 0,
       y: 0,
     };
+
+    this.createTexture();
+    this.createProgram();
+    this.createMesh();
+    this.createBounds(this.sizes);
   }
 
   // old way to load
@@ -148,8 +149,6 @@ export default class Media {
   }
 
   update(scroll) {
-    if (!this.bounds) return;
-
     this.updateRotation();
     this.updateScale();
     this.updateX(scroll);
