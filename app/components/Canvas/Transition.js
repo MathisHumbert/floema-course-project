@@ -63,7 +63,7 @@ export default class Transition {
 
   // ANIMATIONS
   animate(element, onComplete) {
-    const timeline = GSAP.timeline({ onComplete });
+    const timeline = GSAP.timeline();
 
     timeline.to(
       this.mesh.scale,
@@ -102,7 +102,15 @@ export default class Transition {
     );
 
     timeline.call(() => {
-      this.scene.removeChild(this.mesh);
+      onComplete();
     });
+
+    timeline.call(
+      () => {
+        this.scene.removeChild(this.mesh);
+      },
+      null,
+      '+=0.1'
+    );
   }
 }

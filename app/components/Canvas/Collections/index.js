@@ -70,8 +70,6 @@ export default class Collections {
   async show() {
     if (this.transition) {
       const { src } = this.transition.mesh.program.uniforms.tMap.value.image;
-      console.log(this.transition);
-      console.log(this.transition.mesh);
       const texture = window.TEXTURES[src];
       const media = this.medias.find((media) => media.texture === texture);
       const scroll =
