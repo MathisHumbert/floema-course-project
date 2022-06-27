@@ -47,6 +47,8 @@ export default class Detail {
       program: this.program,
     });
 
+    this.mesh.rotation.z = Math.PI * 0.01;
+
     this.mesh.setParent(this.scene);
   }
 
@@ -70,7 +72,9 @@ export default class Detail {
     }
   }
 
-  hide() {}
+  hide() {
+    GSAP.to(this.program.uniforms.uAlpha, { value: 0 });
+  }
 
   // EVENTS
   onResize({ sizes }) {

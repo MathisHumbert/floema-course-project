@@ -130,6 +130,10 @@ export default class Canvas {
       this.collections.hide();
     }
 
+    if (this.details) {
+      this.details.hide();
+    }
+
     this.isFromCollectionToDetail =
       this.template === 'collections' && url.indexOf('detail') > -1;
     this.isFromDetailToCollection =
